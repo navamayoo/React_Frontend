@@ -3,6 +3,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 class NotesService{
 
+
     create = async(note)=>{
       await axios({
           method:"Post",
@@ -50,6 +51,19 @@ class NotesService{
             else throw e.message;
         });
     };
+
+    delete = async(code)=>{
+        try{
+            const response = await axios({
+                method: "DELETE",
+                url:`${API_URL}notes/${code}`
+            });
+            return response.data
+        }catch(e){
+            throw e.message;
+        };
+        
+    }
 }
 
 export default new NotesService();

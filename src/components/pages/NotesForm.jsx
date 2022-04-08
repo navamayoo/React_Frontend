@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { Grid, Box } from "@mui/material";
 import NotesService from "../../service/NotesService";
 
-export default function NotesForm({ electedNoteCode, loading, setLoading,setFormSubmitted }) {
+export default function NotesForm({ notesCode, loading, setLoading,setFormSubmitted, setPopupClose,setCode }) {
 
 
   const initialValues = {
@@ -19,18 +19,23 @@ export default function NotesForm({ electedNoteCode, loading, setLoading,setForm
     description: Yup.string().required("Required"),
   });
 
-  const [notesValues, setNotesValues] = useState(initialValues);
-  const today = new Date().toISOString().split("T")[0];
+  const [formValues, setFormValues] = useState(initialValues);
+  
 
   const handelSubmit = async (values) => {
     if(validationSchema){
-      if(electedNoteCode){
-        await NotesService.update(electedNoteCode, values).then((response) => {
+      if(notesCode){
+        await NotesService.update(notesCode, values).then((response) => {
                 console.log("update");
+                setPopupClose(false);
+                setCode();
+                console.log(setCode());
               });
       }else{
         await NotesService.create(values).then((response) => {
           console.log("crete");
+          setPopupClose(false);
+          setCode();
   });
       }
 
@@ -40,18 +45,18 @@ export default function NotesForm({ electedNoteCode, loading, setLoading,setForm
   };
 
   useEffect(() => {
-    if (electedNoteCode != null) {
-      getNoteByCode(electedNoteCode);
+    if (notesCode != null) {
+      getDataByCode(notesCode);
     } else {
       setLoading(true);
     }
-  }, [electedNoteCode]);
+  }, [notesCode]);
   
 
-  const getNoteByCode = async (code) => {
-    await NotesService.getByCode(code)
+  const getDataByCode = async (notesCode) => {
+    await NotesService.getByCode(notesCode)
       .then((response) => {
-        setNotesValues(response.note);
+        setFormValues(response.note);
         setLoading(true);
         console.log("from data", response.note);
       })
@@ -63,9 +68,9 @@ export default function NotesForm({ electedNoteCode, loading, setLoading,setForm
   return (
     <>
 
-      {/* {loading ? ( */}
+      {loading ? (
         <Formik
-          initialValues={notesValues}
+          initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={async (values, onSubmitProps) => {
             await handelSubmit(values);
@@ -96,9 +101,9 @@ export default function NotesForm({ electedNoteCode, loading, setLoading,setForm
             </Form>
           )}
         </Formik>
-      {/* ) : (
+       ) : (
         "Loading"
-      )} */}
+      )} 
     
     </>
   )

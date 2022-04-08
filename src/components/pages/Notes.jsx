@@ -20,6 +20,7 @@ import Popup from "../controls/Dialog/Popup";
 import NotesService from "../../service/NotesService";
 
 export default function Notes() {
+  
   const [openPopup, setOpenPopup] = useState(false);
   const [records, setRecords] = useState({});
   const [selectedCode, setSelectedCode] = useState(null);
@@ -30,18 +31,25 @@ export default function Notes() {
   const getNotes = async () => {
     await NotesService.getAll()
       .then((response) => {
-        setRecords(response.Notes);
+        setRecords(response.notes);
       })
       .catch((e) => {
         console.log(e);
       });
   };
 
+  const deleteNotes = async (selectedCode)=>{
+    await NotesService.delete(selectedCode);
+  }
+
   useEffect(() => {
     getNotes();
-  }, []);
+  }, [FormSubmitted]);
 
 
+  const handelSetOpenPopup=(val)=>{
+    setOpenPopup(val);
+  }
 
 
   return (
@@ -53,6 +61,7 @@ export default function Notes() {
         style={{ margin: "16px 0px", padding: 10 }}
       >
         <Toolbar>
+
           <Control.Button
             text="Add New"
             variant="outlined"
@@ -70,10 +79,10 @@ export default function Notes() {
         style={{ margin: "16px 0px", padding: 10 }}
       >
         <Toolbar>
-        <Grid justify="center">
+        <Grid  justify="space-between" spacing={50}>
         {records.length > 0
             ? records.map((record) => (
-                <Card  m={5} p={5} spacing={2}  key={record.code}>
+                <Card  m={15}  key={record.code}>
                   <CardContent>
                   <Typography gutterBottom variant="body2" component="div">
                     {record.code} 
@@ -94,14 +103,15 @@ export default function Notes() {
                           onClick={() => {
                              setOpenPopup(true);
                              setSelectedCode(record.code);
-                             
-                            // setLoading(false);
+                             setLoading(false);
                           }}
                           startIcon={<EditIcon />}
                         />
                          
 
-                        <Control.Button text="Delete"  variant="outlined" color="warning" startIcon={<DeleteIcon />}/>
+                        <Control.Button text="Delete"  variant="outlined" color="warning" onClick={() => {
+                             setSelectedCode(record.code);
+                          }} startIcon={<DeleteIcon />}/>
                        
                   </CardActions>
                 </Card>
@@ -115,15 +125,18 @@ export default function Notes() {
       </Paper>
 
       <Popup
+      
         title={selectedCode !=null ? "Update Note": "Create New Note"}
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
       >
         <NotesForm 
-          electedNoteCode={selectedCode}
+          notesCode={selectedCode}
+          setCode={()=>selectedCode(null)}
           loading={loading}
           setLoading={(val) => setLoading(val)}
           setFormSubmitted={setFormSubmitted}
+          setPopupClose={handelSetOpenPopup} 
         />
       </Popup>
     </>
