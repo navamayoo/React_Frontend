@@ -27,6 +27,8 @@ export default function Notes() {
   const [loading, setLoading] = useState(false);
   const [FormSubmitted, setFormSubmitted] = useState(0);
 
+ 
+
   const getNotes = async () => {
     await NotesService.getAll()
       .then((response) => {
@@ -37,8 +39,15 @@ export default function Notes() {
       });
   };
 
-  const deleteNotes = async (selectedCode) => {
-    await NotesService.delete(selectedCode);
+  const deleteNote = async (code) => {
+    
+    await NotesService.delete(code)
+    .then((response) => {
+      console.log(response);;
+    })
+    .catch((e) => {
+      console.log(e);
+    });
   };
 
   useEffect(() => {
@@ -53,10 +62,31 @@ export default function Notes() {
     <>
       <PageHeader title="Notes" icon={<MenuBookIcon fontSize="large" />} />
 
+      {/* <Paper
+        elevation={0}
+        variant="outlined"
+       // style={{ margin: "16px 0px", padding: 10 }}
+      >
+        <Toolbar>
+          <Grid>
+            <Toolbar style={{ float: "right" }}>
+              <Control.Button
+                text="Add New"
+                variant="outlined"
+                onClick={() => {
+                  setOpenPopup(true);
+                }}
+                startIcon={<AddIcon />}
+              />
+            </Toolbar>
+            </Grid>
+            </Toolbar>
+            </Paper> */}
+
       <Paper
         elevation={0}
         variant="outlined"
-        // style={{ margin: "16px 0px", padding: 10 }}
+         style={{ margin: "16px 0px", padding: 10 }}
       >
         <Toolbar>
           <Grid>
@@ -73,7 +103,7 @@ export default function Notes() {
             {records.length > 0
               ? records.map((record) => (
                   <Box m={5} pt={3}>
-                    <Card sx={{ backgroundColor: "#a5d6a7" }} key={record.code}>
+                    <Card sx={{ backgroundColor: "#cfd8dc" }} key={record.code}>
                       <CardContent>
                         <Typography
                           gutterBottom
@@ -106,9 +136,7 @@ export default function Notes() {
                           text="Delete"
                           variant="outlined"
                           color="error"
-                          onClick={() => {
-                            setSelectedCode(record.code);
-                          }}
+                          onClick={() => { deleteNote(record.code); }}
                           startIcon={<DeleteIcon />}
                         />
                       </CardActions>

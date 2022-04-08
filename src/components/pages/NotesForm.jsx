@@ -5,6 +5,8 @@ import Control from "../controls/Control";
 import * as Yup from "yup";
 import { Grid, Box } from "@mui/material";
 import NotesService from "../../service/NotesService";
+import SaveIcon from '@mui/icons-material/Save';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 export default function NotesForm({ notesCode, loading, setLoading,setFormSubmitted, setPopupClose,setCode }) {
 
@@ -90,9 +92,9 @@ export default function NotesForm({ notesCode, loading, setLoading,setFormSubmit
 
                   <Grid item xs={12}>
                   
-                    <Control.Button type="submit" text="Submit" color="success"  spacing={2}/>
+                    <Control.Button type="submit" text="Submit" color="success" startIcon={<SaveIcon/>}  spacing={2}/>
                     
-                   <Control.Button type="reset" text="Reset" spacing={2} />
+                   <Control.Button type="reset" text="Reset" startIcon={<RestartAltIcon/>}   spacing={2} />
                   
                     
                   </Grid>
