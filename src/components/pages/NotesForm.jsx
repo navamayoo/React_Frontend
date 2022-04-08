@@ -38,6 +38,28 @@ export default function NotesForm({ electedNoteCode, loading, setLoading,setForm
 
       setFormSubmitted((prev) => prev + 1);
   };
+
+  useEffect(() => {
+    if (electedNoteCode != null) {
+      getNoteByCode(electedNoteCode);
+    } else {
+      setLoading(true);
+    }
+  }, [electedNoteCode]);
+  
+
+  const getNoteByCode = async (code) => {
+    await NotesService.getByCode(code)
+      .then((response) => {
+        setForm(response.note);
+        setLoading(true);
+        console.log("from data", response.note);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <>
 
