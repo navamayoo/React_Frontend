@@ -51,7 +51,7 @@ export default function NotesForm({ electedNoteCode, loading, setLoading,setForm
   const getNoteByCode = async (code) => {
     await NotesService.getByCode(code)
       .then((response) => {
-        setForm(response.note);
+        setNotesValues(response.note);
         setLoading(true);
         console.log("from data", response.note);
       })
