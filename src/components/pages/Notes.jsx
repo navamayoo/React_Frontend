@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import Popup from "../controls/Dialog/Popup";
 import NotesService from "../../service/NotesService";
+import DialogBox from "../controls/Dialog/DialogBox";
 
 export default function Notes() {
   const [openPopup, setOpenPopup] = useState(false);
@@ -26,7 +27,8 @@ export default function Notes() {
   const [selectedCode, setSelectedCode] = useState(null);
   const [loading, setLoading] = useState(false);
   const [FormSubmitted, setFormSubmitted] = useState(0);
-
+  const [open, setOpen] =useState(false);
+  const [rDelete, setRDelete]=useState(false);
  
 
   const getNotes = async () => {
@@ -40,14 +42,16 @@ export default function Notes() {
   };
 
   const deleteNote = async (code) => {
-    
-    await NotesService.delete(code)
-    .then((response) => {
-      console.log(response);;
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+      if(rDelete){
+        await NotesService.delete(code)
+        .then((response) => {
+          console.log(response);;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      }
+
   };
 
   useEffect(() => {
@@ -61,27 +65,6 @@ export default function Notes() {
   return (
     <>
       <PageHeader title="Notes" icon={<MenuBookIcon fontSize="large" />} />
-
-      {/* <Paper
-        elevation={0}
-        variant="outlined"
-       // style={{ margin: "16px 0px", padding: 10 }}
-      >
-        <Toolbar>
-          <Grid>
-            <Toolbar style={{ float: "right" }}>
-              <Control.Button
-                text="Add New"
-                variant="outlined"
-                onClick={() => {
-                  setOpenPopup(true);
-                }}
-                startIcon={<AddIcon />}
-              />
-            </Toolbar>
-            </Grid>
-            </Toolbar>
-            </Paper> */}
 
       <Paper
         elevation={0}
@@ -136,7 +119,7 @@ export default function Notes() {
                           text="Delete"
                           variant="outlined"
                           color="error"
-                          onClick={() => { deleteNote(record.code); }}
+                          onClick={() => {setOpen(true); deleteNote(record.code); }}
                           startIcon={<DeleteIcon />}
                         />
                       </CardActions>
@@ -162,6 +145,15 @@ export default function Notes() {
           setPopupClose={handelSetOpenPopup}
         />
       </Popup>
+      <DialogBox
+      title="Warning Record will be Delete"
+      open={open}
+      setOpen={setOpen}
+      rDelete={rDelete} 
+      setRDelete={setRDelete}
+      />
+
+  
     </>
   );
 }
