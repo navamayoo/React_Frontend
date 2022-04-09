@@ -102,10 +102,10 @@ export default function NotesForm({
                     />
                   </Grid>
 
-                  <Grid item xs={12}>
+                  <Grid item justifyContent="flex-end" xs={12}>
                     <Control.Button
                       type="submit"
-                      text="Submit"
+                      text={notesCode !=null ? "Update":"Save"}
                       color="success"
                       startIcon={<SaveIcon />}
                       spacing={2}

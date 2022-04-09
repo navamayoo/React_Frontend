@@ -75,7 +75,7 @@ export default function Notes() {
           <Grid>
             <Toolbar style={{ float: "right" }}>
               <Control.Button
-                text="Add New"
+                text="Create New Note"
                 variant="outlined"
                 onClick={() => {
                   setOpenPopup(true);
