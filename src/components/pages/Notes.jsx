@@ -27,9 +27,8 @@ export default function Notes() {
   const [selectedCode, setSelectedCode] = useState(null);
   const [loading, setLoading] = useState(false);
   const [FormSubmitted, setFormSubmitted] = useState(0);
-  const [open, setOpen] =useState(false);
-  const [rDelete, setRDelete]=useState(false);
- 
+  const [open, setOpen] = useState(false);
+  const [rDelete, setRDelete] = useState(false);
 
   const getNotes = async () => {
     await NotesService.getAll()
@@ -42,16 +41,15 @@ export default function Notes() {
   };
 
   const deleteNote = async (code) => {
-      if(rDelete){
-        await NotesService.delete(code)
+    if (rDelete) {
+      await NotesService.delete(code)
         .then((response) => {
-          console.log(response);;
+          console.log(response);
         })
         .catch((e) => {
           console.log(e);
         });
-      }
-
+    }
   };
 
   useEffect(() => {
@@ -69,7 +67,7 @@ export default function Notes() {
       <Paper
         elevation={0}
         variant="outlined"
-         style={{ margin: "16px 0px", padding: 10 }}
+        style={{ margin: "16px 0px", padding: 10 }}
       >
         <Toolbar>
           <Grid>
@@ -119,7 +117,10 @@ export default function Notes() {
                           text="Delete"
                           variant="outlined"
                           color="error"
-                          onClick={() => {setOpen(true); deleteNote(record.code); }}
+                          onClick={() => {
+                            setOpen(true);
+                            deleteNote(record.code);
+                          }}
                           startIcon={<DeleteIcon />}
                         />
                       </CardActions>
@@ -146,14 +147,12 @@ export default function Notes() {
         />
       </Popup>
       <DialogBox
-      title="Warning Record will be Delete"
-      open={open}
-      setOpen={setOpen}
-      rDelete={rDelete} 
-      setRDelete={setRDelete}
+        title="Warning Record will be Delete"
+        open={open}
+        setOpen={setOpen}
+        rDelete={rDelete}
+        setRDelete={setRDelete}
       />
-
-  
     </>
   );
 }

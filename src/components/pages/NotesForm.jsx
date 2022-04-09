@@ -34,7 +34,6 @@ export default function NotesForm({
           console.log("update");
           setPopupClose(false);
           setCode();
-          
         });
       } else {
         await NotesService.create(values).then((response) => {
@@ -42,8 +41,6 @@ export default function NotesForm({
           setPopupClose(false);
           setCode();
         });
-
-
       }
     }
 
@@ -105,7 +102,7 @@ export default function NotesForm({
                   <Grid item justifyContent="flex-end" xs={12}>
                     <Control.Button
                       type="submit"
-                      text={notesCode !=null ? "Update":"Save"}
+                      text={notesCode != null ? "Update" : "Save"}
                       color="success"
                       startIcon={<SaveIcon />}
                       spacing={2}
